@@ -1,0 +1,36 @@
+<div class="space-y-6 max-w-3xl mx-auto">
+  <h2 class="text-xl font-bold text-slate-800">Búsqueda de Clientes</h2>
+
+  <input
+    type="text"
+    [formControl]="busqueda"
+    placeholder="Buscar por documento o razón social (mín. 3 caracteres)"
+    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+  />
+
+  @if (error()) {
+    <p class="text-xs text-red-600">{{ error() }}</p>
+  }
+
+  <ul class="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white text-sm">
+    @for (c of resultados(); track c.id) {
+      <li>
+        <button type="button" class="w-full px-4 py-3 text-left hover:bg-slate-50" (click)="seleccionado.set(c)">
+          <span class="font-medium text-slate-800">{{ c.razonSocial }}</span>
+          <span class="ml-2 text-xs text-slate-500">{{ c.numeroDocumento }}</span>
+        </button>
+      </li>
+    } @empty {
+      <li class="px-4 py-6 text-center text-slate-400">Sin resultados.</li>
+    }
+  </ul>
+
+  @if (seleccionado(); as c) {
+    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-xs text-sm space-y-1">
+      <h3 class="text-base font-bold text-slate-800">{{ c.razonSocial }}</h3>
+      <p><span class="font-semibold">Documento:</span> {{ c.tipoDocumento }} {{ c.numeroDocumento }}</p>
+      <p><span class="font-semibold">Segmento:</span> {{ c.segmento }}</p>
+      <p><span class="font-semibold">Correo:</span> {{ c.correo }}</p>
+    </div>
+  }
+</div>
